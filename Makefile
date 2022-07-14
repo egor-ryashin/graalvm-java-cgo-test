@@ -4,7 +4,7 @@ XMX = 7g
 TARGET_CLASS=src/libjavacgo/impl/LibJavaCgo.class
 
 .PHONY: all
-all: target/native/libjavacgo.so
+all: target/native/libjavacgo.dylib
 
 .PHONY: clean
 clean:
@@ -15,7 +15,7 @@ $(TARGET_CLASS): src/libjavacgo/impl/LibJavaCgo.java
 	    -cp $(GRAALVM_HOME)/lib/svm/builder/svm.jar \
 	    src/libjavacgo/impl/LibJavaCgo.java
 
-target/native/libjavacgo.so: \
+target/native/libjavacgo.dylib: \
 	$(TARGET_CLASS)
 	mkdir -p target/native
 	native-image \
@@ -26,7 +26,6 @@ target/native/libjavacgo.so: \
 	-H:Log=registerResource: \
 	-H:+RemoveSaturatedTypeFlows \
 	-H:+PrintClassInitialization \
-	-H:+TraceClassInitialization \
 	--verbose \
 	--no-fallback \
 	--no-server \
@@ -34,8 +33,8 @@ target/native/libjavacgo.so: \
 	$(OPTS) \
 	-J-Xms$(XMS) \
 	-J-Xmx$(XMX)
-	mv graal_isolate_dynamic.h graal_isolate.h libjavacgo.h libjavacgo.so libjavacgo_dynamic.h target/native
+	mv graal_isolate_dynamic.h graal_isolate.h libjavacgo.h libjavacgo.dylib libjavacgo_dynamic.h target/native
 
 target/call_from_go: \
-	target/native/libjavacgo.so
+	target/native/libjavacgo.dylib
 	go build -o target/call_from_go --ldflags "-s -w -linkmode 'external'" ./example/main.go
