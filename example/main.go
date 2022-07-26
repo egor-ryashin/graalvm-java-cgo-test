@@ -1,15 +1,19 @@
 package main
 
-// #cgo CFLAGS: -I${SRCDIR}/../target/native
-// #cgo LDFLAGS: -L${SRCDIR}/../target/native -ljavacgo
+// #cgo CFLAGS: -I${SRCDIR}/../target
+// #cgo LDFLAGS: -L${SRCDIR}/../target -lcgotest
 //
 // #include <stdlib.h>
-// #include <libjavacgo.h>
+// #include <libcgotest.h>
+//
+//
+//  static char* pass_str(graal_isolatethread_t* thread) {
+//    return java_cgo_str(thread, malloc);
+//  }
+//
 import "C"
 import (
 	"fmt"
-	"strconv"
-	"sync"
 	"unsafe"
 )
 
@@ -58,10 +62,10 @@ func (j *javaCgo) Str(s string) (string, error) {
 		return "", err
 	}
 
-	cstr := C.CString(s)
-	defer C.free(unsafe.Pointer(cstr))
-
-	return C.GoString(C.java_cgo_str(thread, cstr)), nil
+  cstr := C.pass_str(thread)
+  s = C.GoString(cstr)
+  C.free(unsafe.Pointer(cstr))
+  return s, nil
 }
 
 func main() {
@@ -71,28 +75,5 @@ func main() {
 		return
 	}
 
-	var wg sync.WaitGroup
-
-	n := 1000
-
-	for t := 0; t < 100; t++ {
-
-		wg.Add(1)
-		go func(t int) {
-			defer wg.Done()
-
-			for i := 0; i < n; i++ {
-				key := "key" + strconv.Itoa(i)
-				val, err := javaCgo.Str(key)
-				if err != nil {
-					fmt.Println(err)
-				}
-				fmt.Println("thread " + strconv.Itoa(t) + ": " + val)
-			}
-		}(t)
-	}
-
-	wg.Wait()
-
-	fmt.Println("parallel run finished")
+	fmt.Println(javaCgo.Str("hey"))
 }
