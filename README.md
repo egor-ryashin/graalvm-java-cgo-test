@@ -1,5 +1,7 @@
 # graalvm-java-cgo-test
 
+This demonstrates the use of GraalVM native shared library being used in Go executable. Particularly it shows how to call a Java function from Go and handle a returned string.
+
 Build
 ---
 
