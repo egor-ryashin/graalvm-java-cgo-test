@@ -41,5 +41,5 @@ jobs:
       with:
         name: dist
         path: |
-          target/libtestcgo.dylib
+          target/libcgotest.dylib
           app
