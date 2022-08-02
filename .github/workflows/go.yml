@@ -42,3 +42,9 @@ jobs:
         files: example/main.go Makefile
         recursive: false
         dest: dist.zip
+        
+    - name: Create artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist.zip
+        path: dist.zip
