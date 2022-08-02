@@ -30,20 +30,18 @@ jobs:
       with:
         go-version: 1.18
         
-    - name: Build native library
-      run: mvn package
+#    - name: Build native library
+#      run: mvn package
 
-    - name: Build CGO app
-      run: go build -v -o app ./example/main.go
-    
-    - uses: vimtor/action-zip@v1
-      with:
-        files: target/libtestcgo.dylib app
-        recursive: false
-        dest: dist.zip
+#    - name: Build CGO app
+#      run: go build -v -o app ./example/main.go
         
-    - name: Create artifact
+    - name: Create a distributive
       uses: actions/upload-artifact@v3
       with:
-        name: dist
-        path: dist.zip
+        name: dist.zip
+        path: |
+          Makefile
+          example/main.go
+          target/libtestcgo.dylib
+          app
