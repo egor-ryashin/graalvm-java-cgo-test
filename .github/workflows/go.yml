@@ -30,18 +30,16 @@ jobs:
       with:
         go-version: 1.18
         
-#    - name: Build native library
-#      run: mvn package
+    - name: Build native library
+      run: mvn package
 
-#    - name: Build CGO app
-#      run: go build -v -o app ./example/main.go
+    - name: Build CGO app
+      run: go build -v -o app ./example/main.go
         
     - name: Create a distributive
       uses: actions/upload-artifact@v3
       with:
         name: dist
         path: |
-          Makefile
-          example/main.go
           target/libtestcgo.dylib
           app
