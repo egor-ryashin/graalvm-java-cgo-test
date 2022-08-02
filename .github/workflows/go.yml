@@ -39,7 +39,7 @@ jobs:
     - name: Create a distributive
       uses: actions/upload-artifact@v3
       with:
-        name: dist.zip
+        name: dist
         path: |
           Makefile
           example/main.go
