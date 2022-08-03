@@ -13,17 +13,17 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '11'
-        distribution: 'adopt'
+#    - name: Set up JDK 11
+#      uses: actions/setup-java@v3
+#      with:
+#        java-version: '11'
+#        distribution: 'adopt'
 
-    - uses: ayltai/setup-graalvm@v1
+    - uses: graalvm/setup-graalvm@v1
       with:
-        java-version: 11
-        graalvm-version: 21.1.0
-        native-image: true
+        version: '22.1.0'
+        java-version: '17'
+        components: 'native-image'
 
     - name: Set up Go
       uses: actions/setup-go@v3
