@@ -7,8 +7,8 @@ package main
 // #include <libcgotest.h>
 //
 //
-//  static char* pass_str(graal_isolatethread_t* thread) {
-//    return java_cgo_str(thread, malloc);
+//  static char* pass_str(graal_isolatethread_t* thread, char* str) {
+//    return java_cgo_str(thread, malloc, str);
 //  }
 //
 import "C"
@@ -62,7 +62,7 @@ func (j *javaCgo) Str(s string) (string, error) {
 		return "", err
 	}
 
-  cstr := C.pass_str(thread)
+  cstr := C.pass_str(thread, C.CString(s))
   s = C.GoString(cstr)
   C.free(unsafe.Pointer(cstr))
   return s, nil
@@ -75,5 +75,5 @@ func main() {
 		return
 	}
 
-	fmt.Println(javaCgo.Str("hey"))
+	fmt.Println(javaCgo.Str("test 1"))
 }
