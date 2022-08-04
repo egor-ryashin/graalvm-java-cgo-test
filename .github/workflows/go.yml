@@ -36,10 +36,14 @@ jobs:
       - name: Build CGO app
         run: go build -v -o app ./example/main.go
 
+      - name: Prepare for packagin a distributive
+        run: mv ./target/libcgotest.* ./target/graal_isolate.* ./
+
       - name: Create a distributive
         uses: actions/upload-artifact@v3
         with:
           name: dist
           path: |
-            target/libcgotest.dylib
+            libcgotest.*
+            graal_isolate.*
             app
