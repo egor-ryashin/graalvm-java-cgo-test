@@ -30,6 +30,9 @@ jobs:
       - name: Build CGO app
         run: go build -v -o app ./example/main.go
 
+      - name: Test executable
+        run: ./app | grep 'no way'
+
       - name: Prepare for packagin a distributive
         run: mv ./target/libcgotest.* ./target/graal_isolate.* ./
 
